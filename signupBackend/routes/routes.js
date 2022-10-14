@@ -28,6 +28,7 @@ try {
               password:securePassword
     })
     console.log(signedUpUser);
+    
     signedUpUser.save().then(data => {
         console.log(data);
  res.status(201).send({message:"user created successfully"});

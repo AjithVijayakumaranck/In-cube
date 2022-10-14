@@ -1,4 +1,5 @@
 const mongoose = require('mongoose')
+const ObjectId = mongoose.Schema.ObjectId
 
 
 const incubationForm = new mongoose.Schema({
@@ -32,6 +33,10 @@ companyName:{
 },
 backGround:{
     type:String,
+    required:true
+},
+applicantId:{
+    type:ObjectId,
     required:true
 },
 products:{
@@ -74,8 +79,17 @@ slotstatus:{
     type:Boolean,
     default:false
 },
-
-});
+latest:{
+    type:Boolean,
+    default:true
+},
+date:{
+    type:Date,
+    default:Date.now()
+}
+},
+{ timestamps: true }
+);
 
 
 

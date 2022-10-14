@@ -34,9 +34,12 @@ function Signup() {
             }
 
             await axios.post("http://localhost:4000/auth/login",registered).then((response) => {
-                console.log(response.data);
+                console.log(response.data.user,"hello google");
+
                 const { token } = response.data
                 localStorage.setItem( "token", "Bearer " + token);
+                localStorage.setItem( "userId",response.data.user._id);
+                localStorage.setItem( "userName",response.data.user.firstName);
                 setEmail("")
                 setPassword("")
                 navigate('/')
@@ -72,6 +75,7 @@ function Signup() {
                             }}
                             value={email}
                             type="email"
+                            required
                             className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border border--500 rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                         />
                     </div>
@@ -84,6 +88,7 @@ function Signup() {
                         </label>
                         <input
                             type="password"
+                            required
                             onChange={(e)=>{
                                 setPassword(e.target.value)
                             }}

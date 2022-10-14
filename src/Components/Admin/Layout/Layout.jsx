@@ -1,8 +1,13 @@
-import React from 'react'
-import { Outlet } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Outlet, useNavigate } from 'react-router-dom'
 import Dashboard from '../AdminDashboard/Dashboard'
 
 const Layout = () => {
+ const navigate=useNavigate()
+  useEffect(() => {
+    navigate('/admin/application')
+  },[])
+  
   return (
     <div className='flex overflow-hidden h-screen'>
         <div>

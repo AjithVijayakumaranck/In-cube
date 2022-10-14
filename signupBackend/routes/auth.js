@@ -5,9 +5,19 @@ const {Incubation} = require('../modals/incubationForm')
 const joi = require('joi')
 const jwt = require("jsonwebtoken")
 const oneday = 1000*60*60*24
-
 const multer = require('multer')
 const { response } = require("express")
+const fileStorageEngine = multer.diskStorage({
+    destination: (req, file, cb) => {
+        console.log("stage 1");
+        cb(null, 'b')
+    },
+    filename: (req, file, cb) => {
+        console.log(file);
+        cb(null, Date.now() + '--' + file.originalname)
+    }
+})
+const upload = multer({ storage: fileStorageEngine })
 
 const  {countc1,countr1,countr2} = require('../rows')
 
@@ -34,24 +44,21 @@ if(req.body.booking.length != 0){
            res.json({status:true,message:"Slot Booked",countc1,countr1,countr2})
         }
        }
-
+ 
 }else{
     res.json({message:"select a company"})
 }
 })
 
 
-const fileStorageEngine = multer.diskStorage({
-    destination: (req, file, cb) => {
-        console.log("stage 1");
-        cb(null, './public/images')
-    },
-    filename: (req, file, cb) => {
-        console.log(file);
-        cb(null, Date.now() + '--' + file.originalname)
-    }
+router.post('/formsubmited',(req,res)=>{
+    console.log(req.body,"helooo");
+    Incubation.find({ applicantId:req.body.userId }).sort({
+        createdAt: -1}).limit(1).then((response)=>{
+        console.log(response);
+        res.json(response[0])
+    })
 })
-const upload = multer({ storage: fileStorageEngine })
 
 // router.get('/token',(req,res)=>{
 //     console.log(req.header);
@@ -93,8 +100,9 @@ router.post("/login",async(req,res)=>{
 })
 
 router.post("/test",upload.single("logo"),async(req,res)=>{
+
     // const {Incubation, Incubation, Incubation} = require('../modals/incubationForm')
-    console.log(req.body);  
+    console.log(req.body,"have a nice daty");  
     console.log(req.file);  
 
     const IncubationForm = await new Incubation({
@@ -112,12 +120,16 @@ router.post("/test",upload.single("logo"),async(req,res)=>{
         vProposition:req.body.vPropostion,
         Incubation:req.body.incubation,
         companyLogo:req.file.filename,
+        applicantId:req.body.applicantId,
         pendingstatus:true,
         approvestatus:false,
         declinestatus:false
         })
+       
  IncubationForm.save().then((data)=>{
-    console.log("successfully applied");
+    console.log(data,"he is yout data");
+    // console.log("successfully applied");
+    res.json('gg')
  })
 
 })
@@ -142,8 +154,14 @@ router.post('/allocatedlist',async (req,res)=>{
 
 router.post('/pendinglist',async (req,res)=>{
     console.log('code is here');
-    const datas=await Incubation.find({pendingstatus:true})
+    const datas=await Incubation.find({pendingstatus:true,latest:false})
     console.log(datas);
+    res.status(200).json(datas)
+})
+router.post('/latestlist',async (req,res)=>{
+    console.log('code is here');
+    const datas=await Incubation.find({latest:true})
+    console.log(datas,"helloo");
     res.status(200).json(datas)
 })
 router.post('/approve_application',async (req,res)=>{
@@ -171,6 +189,19 @@ router.post('/decline_application',async (req,res)=>{
    }).then(async(response)=>{
     const datas=await Incubation.find({pendingstatus:true})
     res.status(200).json(datas)
+    console.log(response);
+   })
+})
+router.post('/notification',async (req,res)=>{
+    console.log("have a noie day");
+   Incubation.updateOne({_id:req.body.formId},{
+    $set:{
+       latest:false
+    }
+   }).then(async(response)=>{
+   const datas=await Incubation.find({pendingstatus:true})
+   const latest=await Incubation.find({latest:true})
+    res.status(200).json({datas,latest})
     console.log(response);
    })
 })

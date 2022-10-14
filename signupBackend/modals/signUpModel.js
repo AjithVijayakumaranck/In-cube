@@ -2,6 +2,9 @@ const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
 const joi = require('joi')
 const passwordComplexity = require('joi-password-complexity')
+const { type } = require('@testing-library/user-event/dist/type')
+const ObjectId = mongoose.Schema.ObjectId
+const submited = new mongoose.Schema({  });
 
 const signUpTemplate = new mongoose.Schema({
 firstName:{
@@ -20,6 +23,13 @@ password:{
     type:String,
     required:true
 },
+LatestForm:{
+    type:ObjectId,
+},
+// SubmitedForm:{
+
+// }
+// ,
 date:{
     type:Date,
     default:Date.now()

@@ -29,7 +29,7 @@ function App() {
         }
 
         if( firstNameError !== '' ){
-            setErrorMsg({...errorMsg, firstName: firstNameError})
+            setErrorMsg({...errorMsg, firstName:firstNameError})
             return false;
         }
         return true;
@@ -67,8 +67,8 @@ function App() {
     const onChangeHandler = ( event )=>{
         setfirstName(event.target.value);
         if( event.target.name === "firstName" ){
-            if( event.target.value.length > 6){
-                setErrorMsg({ ...errorMsg, firstName: "Atmost 6 characters required" })
+            if( event.target.value.length < 5){
+                setErrorMsg({ ...errorMsg, firstName: "Atleast 5 characters required" })
             }
             else setErrorMsg({ ...errorMsg, [event.target.name]:''})
         }
@@ -93,9 +93,10 @@ function App() {
                                 value={firstName}
                                 name='firstName'
                                 type="text"
+                                required
                                 className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border border--500 rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                             />
-                            { errorMsg.firstName !==''? <p> {errorMsg.firstName} </p>: null }
+                            { errorMsg.firstName !==''? <p className='text-sm p-1 text-red-600'> {errorMsg.firstName} </p>: null }
                         </div>
                         <div className="mb-2">
                             <label
@@ -106,10 +107,12 @@ function App() {
                             <input
                                 onChange={(e) => {
                                     setlastName(e.target.value)
+                                    onChangeHandler()
                                 }}
                                 value={lastName}
                                 name="lastname"
                                 type="text"
+                                required
                                 className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border border--500 rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                             />
                         </div>
@@ -126,6 +129,7 @@ function App() {
                                 value={email}
                                 type="email"
                                 name="email"
+                                required
                                 className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border border--500 rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                             />
                         </div>
@@ -143,6 +147,7 @@ function App() {
                                 value={password}
                                 name="password"
                                 type="password"
+                                required
                                 className="block w-full px-4 py-2 mt-2 text-purple-700 bg-white border rounded-md focus:border-purple-400 focus:ring-purple-300 focus:outline-none focus:ring focus:ring-opacity-40"
                             />
                         </div>

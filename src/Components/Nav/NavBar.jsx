@@ -1,12 +1,19 @@
-import React,{useContext, useState} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import { useNavigate } from 'react-router-dom'
 import {close,menu} from "../../assets"
 import { MyContext } from '../../Context/context';
 
 function NavBar() {
   const { user }  =  useContext(MyContext);
+  const [User,setUserName]=useState("")
   const [userConfig, setUserConfig] = user
   console.log(user);
+  useEffect(() => {
+    const username = localStorage.getItem('userName')
+    console.log(username);
+    setUserName(username)
+  }, [])
+  
     const navigate=useNavigate()
     const logoutHandler = async ()=>{
         let result = window.confirm('Are you sure you want to log out?')
@@ -22,7 +29,7 @@ function NavBar() {
        <div className='flex justify-between'>
        <h3 className="text-white font-bold pt-5 pl-5 text-2xl"><span className='text-purple-100'>IN</span>-CUBA</h3>
       <div className='sm:flex hidden '>
-      <h2 className='text-white px-3 mt-5' onClick={()=> setUserConfig({...userConfig, name:"Sajith P J"})}>welcome {userConfig.name}</h2>
+      <h2 className='text-white px-3 mt-5' onClick={()=> setUserConfig({...userConfig, name:"Sajith P J"})}>welcome {User}</h2>
         <button className='btn bg-white mr-5 mt-4 rounded-md px-6 text-purple-700 font-semibold' onClick={logoutHandler}>Logout</button>
       </div>
       <div className='sm:hidden  flex flex-col text-white px-3 mt-5 '>

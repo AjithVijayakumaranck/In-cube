@@ -34,7 +34,7 @@ let applicationDatas
   
   return (
     <div>
-          {modalOpen &&   <div className='duration-300 ease-in-out absolute z-[1000] rounded-md bg-white left-[650px] top-[150px] shadow-md  w-[450px]'>
+          {modalOpen &&   <div className='duration-300 ease-in-out absolute z-[1000] rounded-md bg-white left-[650px] top-[100 px] shadow-md  w-[450px]'>
 <div className=''>
     <div className=' bg-white flex justify-end w-full py-1'>
     <button className='bg- px-2 mr-2 rounded-sm text-purple-700' onClick={()=>{

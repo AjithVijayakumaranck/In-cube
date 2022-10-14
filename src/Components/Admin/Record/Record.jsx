@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 
 function Record() {
   const [applicationlist ,  setApplication] = useState([])
+  const [notification , setNotification] = useState([])
   const [modalOpen,setModal] = useState(false)
   const [view,setView]=useState({})
   const viewHandler = (applicant_id) => {
@@ -12,6 +13,19 @@ function Record() {
       const data= response.data.response
       setView(data)
       console.log(view,'kooo');
+    
+    })
+    }
+
+    const latestHandler = (formId) => {
+      axios.post('http://localhost:4000/auth/notification',{formId}).then((response)=>{
+      console.log(response.data,"booom");
+      // const data= response.data
+      // setView(data)
+      setApplication([response.data.datas])
+      setNotification([response.data.latest])
+      setModal(false)
+      // console.log(,'kooo');
     
     })
     }
@@ -46,17 +60,10 @@ function Record() {
        console.log();
        axios.post('http://localhost:4000/auth/pendinglist').then((response)=>{
        console.log(response.data);
-       // applicationDatas = response.data
        setApplication([response.data])
-       // console.log(setApplication)
-     //  response.data.map((obj)=>{
-     //   console.log(obj);
-     //   return(
-     //     setApplication(obj) 
-     //   )
-     //  })
-       // return;
-       
+       axios.post('http://localhost:4000/auth/latestlist').then((res)=>{
+       setNotification([res.data])
+       })
        })
      
        console.log(applicationlist,'hello 000');
@@ -112,14 +119,116 @@ function Record() {
 </div>
     </div>
     <div className="modalFooter flex justify-center pt-5 pb-5">
-<button className='rounded bg-purple-700 text-white px-3 py-1 mx-2 ' onClick={()=>{
-        setModal(false)
-    }}>Close</button>
+{
+  view.latest ? <button className='rounded bg-purple-700 text-white px-3 py-1 mx-2 ' onClick={()=>{
+    latestHandler(view._id)
+}}>Close</button> : <button className='rounded bg-purple-700 text-white px-3 py-1 mx-2 ' onClick={()=>{
+  setModal(false)
+}}>Close</button>
+}
     </div>
 </div>
 </div> }
+
+
+<div className={`${modalOpen && "blur-sm duration-75 ease-in-out"} pl-8 w-full pt-8 pr-8`}>
+      
+
+
+      
+      <h1  className='font-bold text-xl text-purple-800 pb-5'>
+        Latest Applicants List
+      </h1>
+      <div >
+    <div className="overflow-x-auto  md:w-full shadow-md md:rounded-lg ">
+  <table className="text-sm text-left w-full text-white dark:text-gray-400">
+      <thead className="text-xs  text-center uppercase bg-purple-700 text-white">
+          <tr>
+              <th scope="col" className="py-3 px-6">
+                  Applicant Name
+              </th>
+              <th scope="col" className="py-3 px-6">
+                  Company Name
+              </th>
+              <th scope="col" className="py-3 px-6">
+                  Address
+              </th>
+              <th scope="col" className="py-3 px-6">
+                  Email
+              </th>
+              <th scope="col" className="py-3 px-6">
+                  status
+              </th>
+              <th scope="col" className="py-3 px-6 ">
+                  actions
+              </th> 
+          </tr>
+      </thead>
+      <tbody className='text-center'>
+        {
+        notification.map((item)=>{
+          console.log(item,"konichiwa");
+          return(
+
+            item.map((items,index)=>{
+
+              return(
+               <tr key={index} className="bg-white border-b   dark:bg-gray-800 dark:border-gray-700">
+               <td scope="row" className="py-4 px-6 font-medium text-gray-900 whitespace-nowrap">
+                   {items.name}
+               </td>
+               <td className="py-4 px-6 text-gray-900 font-medium">
+                {items.companyName}
+               </td>
+               <td  className="py-4 px-6 text-gray-900 font-medium">
+                  {items.address}
+               </td>
+               <td  className="py-4 px-6 text-gray-900 font-medium">
+                  {items.email}
+               </td>
+               <td  className="py-4 px-6 text-gray-900 font-medium">
+                   pending
+               </td>
+               <td  className="py-4 px-6 text-gray-900 font-medium">
+                   <div className='flex justify-center'>
+                    {/* <button className='text-white bg-purple-700 px-2 mr-2 rounded-md py-1' onClick={()=> {
+                      console.log(items._id);
+                      approveHandler(items._id)
+                    }
+                    }>Approve</button>
+
+                    <button className='text-white bg-slate-700 px-2 rounded-md py-1 mr-2' onClick={()=> {
+                      console.log(items._id);
+                      declineHandler(items._id)
+                    }
+                    }>Decline</button> */}
+
+                    <button className='text-white bg-purple-500 px-5 rounded-md py-1 ' onClick={()=> {
+                      console.log(items._id);
+                      viewHandler(items._id)
+                    }
+                    }>Open</button>
+                   </div>
+               </td>
+           </tr>
+              )
+            })
+          )
+         }) 
+         }
+         
+      </tbody>
+  </table>
+</div>
+    </div>
+    </div>
+
   
     <div className={`${modalOpen && "blur-sm duration-75 ease-in-out"} pl-8 w-full pt-8 pr-8`}>
+      
+
+
+      
         <h1  className='font-bold text-xl text-purple-800 pb-5'>
           Pending List
         </h1>

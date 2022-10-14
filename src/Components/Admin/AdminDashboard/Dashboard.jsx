@@ -57,7 +57,7 @@ function Dashboard() {
             <div className={`h-[100vh] in_cuba-scroller overflow-y-auto bg-purple-700 ${open ? 'w-[250px]' : 'w-20'} duration-300`}>
                 <div className='flex justify-center bg-purple-800'>
                     {
-                        open ? <h3 className={` text-white font-bold pt-5 pb-5 text-2xl duration-300 ease-in-out `}><span className='text-purple-100'>IN</span>-CUBA</h3> : <h3 className=" text-white font-bold pt-5 pb-5  text-3xl duration-300 ease-in-out "><span className='text-purple-100'>IN</span></h3>
+                        open ? <h3 className={` text-white font-bold pt-5 pb-5 text-2xl duration-300 ease-in-out `}><span className='text-purple-300 font-bold'>IN</span>-CUBA</h3> : <h3 className=" text-white font-bold pt-5 pb-5  text-3xl duration-300 ease-in-out "><span className='text-purple-100'>IN</span></h3>
                     }
                 </div>
 
