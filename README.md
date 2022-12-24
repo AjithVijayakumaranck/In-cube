@@ -23,7 +23,7 @@ React js | JWT | Node js | Express js | Tailwind CSS | Mongo DB | JSX
 Clone the project
 
 ```bash
-  git clone https://github.com/Faisal-kkn/incubation_react.git
+  https://github.com/AjithVijayakumaranck/In-cube.git
 ```
 
 Go to the project directory
