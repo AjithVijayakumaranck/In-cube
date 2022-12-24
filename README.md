@@ -1,4 +1,4 @@
-# Incubation Project (web App)
+# Incube (web App)
 
 Incubation is Web Application with the functionalities
 like accepting application from Start up, Jwt authentication with Login,
